@@ -16,6 +16,7 @@ module.exports = async (req, res) => {
       body: JSON.stringify({ query }),
     });
     const { data } = await response.json();
+    console.log(data);  // Add this to inspect the response
     return data;
   };
 
