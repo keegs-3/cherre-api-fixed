@@ -1,13 +1,11 @@
 {
   "version": 2,
-  "functions": {
-    "api/*.js": {
-      "runtime": "vercel-node@3.0.0"
-    }
-  },
+  "builds": [
+    { "src": "api/*.js", "use": "@vercel/node" },
+    { "src": "public/**/*", "use": "@vercel/static" }
+  ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1.js" },
-    { "src": "/", "dest": "/index.html" }
-  ],
-  "outputDirectory": "public"
+    { "src": "/", "dest": "/public/index.html" }
+  ]
 }
