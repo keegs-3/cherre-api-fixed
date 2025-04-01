@@ -1,1 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Property Feed Viewer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+    }
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 16px;
+      width: 300px;
+    }
+    .card h2 {
+      font-size: 18px;
+      margin: 0 0 8px;
+    }
+    .card p {
+      margin: 4px 0;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏠 Property Feed</h1>
+  <div class="container" id="properties"></div>
+
+  <script>
+    async function loadProperties() {
+      const response = await fetch('/api/property-feed');
+      const { properties } = await response.json();
+      const container = document.getElementById('properties');
+
+      properties.forEach(prop => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const addr = prop.address || 'No address';
+        const city = prop.city || 'Unknown city';
+        const state = prop.state || 'Unknown state';
+        const avm = prop.avm || {};
+        const value = avm.estimated_value_amount
+          ? `$${avm.estimated_value_amount.toLocaleString()}`
+          : 'N/A';
+
+        card.innerHTML = `
+          <h2>${addr}</h2>
+          <p><strong>City:</strong> ${city}</p>
+          <p><strong>State:</strong> ${state}</p>
+          <p><strong>AVM Estimate:</strong> ${value}</p>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    loadProperties();
+  </script>
+</body>
+</html>
 
