@@ -5,8 +5,47 @@ const AUTH_TOKEN = 'Bearer YXBpLWNsaWVudC0xMzg0MWM0MC1hNWNlLTQwZjYtOGM5Ny0wYTIzM
 const handler = async (req, res) => {
   const query = `
     query {
-      tax_assessor_v2(limit: 5) {
+      tax_assessor_v2(limit: 100) {
         tax_assessor_id
+        assessed_value
+        market_value
+        zoning_code
+        year_built
+        land_area_acres
+        building_area_sq_ft
+        last_sale_price
+        last_sale_date
+        property_type
+        owner_occupied
+
+        tax_assessor_block_v2 {
+          block_number
+          block_type
+          block_status
+        }
+
+        tax_assessor_lot_v2 {
+          lot_number
+          lot_size_sq_ft
+          lot_type
+          lot_status
+        }
+
+        tax_assessor_owner_v2 {
+          owner_name
+          owner_type
+          ownership_percent
+          mailing_address
+          is_primary_owner
+        }
+
+        usa_tax_assessor_history_v2 {
+          assessment_year
+          assessed_value
+          market_value
+          tax_amount
+          exemption_description
+        }
       }
     }
   `;
@@ -21,8 +60,8 @@ const handler = async (req, res) => {
       body: JSON.stringify({ query }),
     });
 
-    const text = await response.text(); // 🔍 get raw text in case JSON parsing fails
-    console.log('[RAW CHERRE RESPONSE]:', text);
+    const text = await response.text();
+    console.log('[RAW CHERRE RESPONSE]', text);
 
     let json;
     try {
@@ -38,7 +77,10 @@ const handler = async (req, res) => {
     return res.status(200).json(json.data.tax_assessor_v2 || []);
   } catch (err) {
     console.error('[CRASH]', err);
-    return res.status(500).json({ error: 'Serverless function crashed', details: err.message });
+    return res.status(500).json({
+      error: 'Serverless function crashed',
+      details: err.message,
+    });
   }
 };
 
