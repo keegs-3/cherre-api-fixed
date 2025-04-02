@@ -10,12 +10,11 @@ const handler = async (req, res) => {
         year_built
         last_sale_date
         mailing_address
-
-        tax_assessor_owner_v2 {
-          tax_assessor_id
-          owner_name
-          owner_type
-        }
+      }
+      tax_assessor_owner_v2(limit: 100) {
+        tax_assessor_id
+        owner_name
+        owner_type
       }
     }
   `;
@@ -30,21 +29,27 @@ const handler = async (req, res) => {
       body: JSON.stringify({ query })
     });
 
-    const text = await response.text();
-
-    // Log raw GraphQL result for debugging
-    console.log('[CHERRE RAW RESPONSE]', text);
-
-    const json = JSON.parse(text);
+    const raw = await response.text();
+    const json = JSON.parse(raw);
 
     if (json.errors) {
-      return res.status(500).json({
-        error: 'GraphQL query failed',
-        details: json.errors
-      });
+      return res.status(500).json({ error: 'GraphQL query failed', details: json.errors });
     }
 
-    return res.status(200).json(json.data.tax_assessor_v2 || []);
+    // Stitch owners into properties by tax_assessor_id
+    const ownersById = {};
+    for (const owner of json.data.tax_assessor_owner_v2) {
+      const id = owner.tax_assessor_id;
+      if (!ownersById[id]) ownersById[id] = [];
+      ownersById[id].push(owner);
+    }
+
+    const merged = json.data.tax_assessor_v2.map((property) => ({
+      ...property,
+      owners: ownersById[property.tax_assessor_id] || []
+    }));
+
+    return res.status(200).json(merged);
   } catch (err) {
     console.error('[SERVER ERROR]', err);
     return res.status(500).json({
@@ -55,4 +60,3 @@ const handler = async (req, res) => {
 };
 
 module.exports = handler;
-
