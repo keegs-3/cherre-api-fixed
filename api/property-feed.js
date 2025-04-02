@@ -1,13 +1,12 @@
 const fetch = require('node-fetch');
 
-const AUTH_TOKEN = 'Bearer YXBpLWNsaWVudC0xMzg0MWM0MC1hNWNlLTQwZjYtOGM5Ny0wYTIzMmU4ZGU0ZWNAY2hlcnJlLmNvbTpOdUNCJEtYcSVlV3lrSSVnUVY3eTlNczNNbWRzZ0hJUlUwISNCSkM0aFVPWGUzcDI3TjRhRUNac1gyOVFodXZO';
+const AUTH_TOKEN = 'Bearer YXBpLWNsaWVudC0xM...your_token_here...';
 
 const handler = async (req, res) => {
   const query = `
     query {
       tax_assessor_v2(limit: 100) {
         tax_assessor_id
-        property_address
         property_city
         property_state
         property_zip
