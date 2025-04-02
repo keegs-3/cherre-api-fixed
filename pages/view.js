@@ -19,7 +19,7 @@ export default function PropertyViewer() {
 
   return (
     <div className="max-w-7xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">🏠 Property Feed Viewer V2</h1>
+      <h1 className="text-2xl font-bold mb-4">🏠 Property Feed Viewer</h1>
 
       <div className="flex mb-4 gap-2">
         <input
