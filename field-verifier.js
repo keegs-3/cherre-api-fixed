@@ -6,25 +6,17 @@ const AUTH_TOKEN = 'Bearer YXBpLWNsaWVudC0xMzg0MWM0MC1hNWNlLTQwZjYtOGM5Ny0wYTIzM
 const objectType = 'tax_assessor_owner_v2';
 
 const fieldsToTest = [
+  const fieldsToTest = [
   'tax_assessor_id',
-  'assessed_value',
-  'market_value',
-  'year_built',
-  'zoning_code',
-  'property_type',
-  'owner_occupied',
-  'building_area_sq_ft',
-  'land_area_acres',
-  'last_sale_price',
-  'last_sale_date',
+  'owner_name',
+  'owner_type',
+  'ownership_percent',
   'mailing_address',
-  'property_city',
-  'property_state',
-  'apn',
-  'county',
-  'school_district',
-  'neighborhood',
-  'property_address'
+  'is_primary_owner',
+  'owner_mailing_city',
+  'owner_mailing_state',
+  'owner_mailing_zip',
+  'is_corporate_owner'
 ];
 
 async function testField(field) {
