@@ -2,20 +2,17 @@ const fetch = require('node-fetch');
 
 const AUTH_TOKEN = 'Bearer YXBpLWNsaWVudC0xMzg0MWM0MC1hNWNlLTQwZjYtOGM5Ny0wYTIzMmU4ZGU0ZWNAY2hlcnJlLmNvbTpOdUNCJEtYcSVlV3lrSSVnUVY3eTlNczNNbWRzZ0hJUlUwISNCSkM0aFVPWGUzcDI3TjRhRUNac1gyOVFodXZO';
 
-const objectType = 'tax_assessor_owner_v2'; // << YOU control this
+const objectType = 'tax_assessor_block_v2'; // ← change this per scan
 
 const fieldsToTest = [
   'tax_assessor_id',
-  'owner_name',
-  'owner_type',
-  'ownership_percent',
-  'mailing_address',
-  'is_primary_owner',
-  'owner_mailing_city',
-  'owner_mailing_state',
-  'owner_mailing_zip',
-  'is_corporate_owner'
+  'block_number',
+  'block_type',
+  'block_status',
+  'block_description',
+  'block_condition'
 ];
+
 
 (async () => {
   console.log(`🧠 Using objectType: ${objectType}`);
