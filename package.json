@@ -1,0 +1,13 @@
+{
+  "name": "cherre-api-fixed",
+  "version": "1.0.0",
+  "description": "Vercel-deployed API that merges Cherre property data",
+  "main": "api/property-feed.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "node api/property-feed.js"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
+}
