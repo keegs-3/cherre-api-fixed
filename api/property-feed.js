@@ -1,17 +1,20 @@
 const fetch = require('node-fetch');
 
-const AUTH_TOKEN = 'Bearer YXBpLWNsaWVudC0xMzg0MWM0MC1hNWNlLTQwZjYtOGM5Ny0wYTIzMmU4ZGU0ZWNAY2hlcnJlLmNvbTpOdUNCJEtYcSVlV3lrSSVnUVY3eTlNczNNbWRzZ0hJUlUwISNCSkM0aFVPWGUzcDI3TjRhRUNac1gyOVFodXZO';
+// 🔐 Secure: pulls from Vercel or .env.local
+const AUTH_TOKEN = process.env.CHERRE_TOKEN;
 
-const handler = async (req, res) => {
+module.exports = async (req, res) => {
+  const { limit = 50, offset = 0, search = '' } = req.query;
+
   const query = `
     query {
-      tax_assessor_v2(limit: 100) {
+      tax_assessor_v2(limit: ${limit}, offset: ${offset}) {
         tax_assessor_id
         year_built
         last_sale_date
         mailing_address
       }
-      tax_assessor_owner_v2(limit: 100) {
+      tax_assessor_owner_v2(limit: 1000) {
         tax_assessor_id
         owner_name
         owner_type
@@ -24,39 +27,42 @@ const handler = async (req, res) => {
       method: 'POST',
       headers: {
         Authorization: AUTH_TOKEN,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ query })
+      body: JSON.stringify({ query }),
     });
 
-    const raw = await response.text();
-    const json = JSON.parse(raw);
+    const data = await response.json();
 
-    if (json.errors) {
-      return res.status(500).json({ error: 'GraphQL query failed', details: json.errors });
-    }
-
-    // Stitch owners into properties by tax_assessor_id
+    // 🔗 Join owner data to property
     const ownersById = {};
-    for (const owner of json.data.tax_assessor_owner_v2) {
+    for (const owner of data.data.tax_assessor_owner_v2) {
       const id = owner.tax_assessor_id;
       if (!ownersById[id]) ownersById[id] = [];
       ownersById[id].push(owner);
     }
 
-    const merged = json.data.tax_assessor_v2.map((property) => ({
+    let merged = data.data.tax_assessor_v2.map((property) => ({
       ...property,
-      owners: ownersById[property.tax_assessor_id] || []
+      owners: ownersById[property.tax_assessor_id] || [],
     }));
+
+    // 🔍 Filter by search
+    if (search) {
+      merged = merged.filter((p) =>
+        (p.mailing_address || '').toLowerCase().includes(search.toLowerCase()) ||
+        (p.owners || []).some((o) =>
+          (o.owner_name || '').toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    }
 
     return res.status(200).json(merged);
   } catch (err) {
-    console.error('[SERVER ERROR]', err);
+    console.error('[CHERRE ERROR]', err);
     return res.status(500).json({
-      error: 'Serverless function crashed',
-      details: err.message
+      error: 'Internal server error',
+      details: err.message,
     });
   }
 };
-
-module.exports = handler;
