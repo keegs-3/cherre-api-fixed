@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 
-mapboxgl.accessToken = 'YOUR_MAPBOX_TOKEN_HERE'; // Replace with your real token
+mapboxgl.accessToken = 'pk.eyJ1Ijoia2VlZ2Fua2RvbGFuIiwiYSI6ImNtOTBhcTI3azBkNGcyanB0b2VwdHdvZzQifQ.c8P_vTw87EN3WqqM_WZKLQ'; // Replace with your real token
 
 export default function ZillowModeMap() {
   const mapContainer = useRef(null);
