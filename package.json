@@ -4,7 +4,7 @@
   "description": "Vercel-deployed API that merges Cherre property data",
   "main": "api/property-feed.js",
   "scripts": {
-    "dev": "vercel dev",
+    "dev": "next dev",
     "start": "node api/property-feed.js"
   },
   "dependencies": {
