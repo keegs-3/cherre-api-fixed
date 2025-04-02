@@ -228,22 +228,8 @@ module.exports = async (req, res) => {
         owner_type
         is_owner_company
         cherre_ingest_datetime
-      } }`),
-      fetchCherre(`{ usa_tax_assessor_history_v2(limit: 50) {
-        tax_assessor_id
-        last_sale_date
-        prior_sale_date
-        market_value_total
-        assessed_value_total
-        assessed_tax_year
-        year_built
-        effective_year_built
-        tax_bill_amount
-        property_use_code_mapped
-        vacant_flag
-        data_publish_date
-        cherre_ingest_datetime
-      } }`),
+      } 
+      }`),
     ]);
 
     const merged = (taxAssessorData?.tax_assessor_v2 || []).map((taxAssessor) => {
@@ -253,7 +239,6 @@ module.exports = async (req, res) => {
         blocks: taxAssessorBlockData?.tax_assessor_block_v2?.filter(b => b.tax_assessor_id === id) || [],
         lots: taxAssessorLotData?.tax_assessor_lot_v2?.filter(l => l.tax_assessor_id === id) || [],
         owners: taxAssessorOwnerData?.tax_assessor_owner_v2?.filter(o => o.tax_assessor_id === id) || [],
-        history: usaTaxAssessorHistoryData?.usa_tax_assessor_history_v2?.filter(h => h.tax_assessor_id === id) || [],
       };
     });
 
