@@ -45,4 +45,26 @@ export default function PropertyViewer() {
             <th className="px-4 py-2">Address</th>
             <th className="px-4 py-2">Year Built</th>
             <th className="px-4 py-2">Last Sale</th>
-
+            <th className="px-4 py-2">Owner(s)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {properties.map((p, i) => (
+            <tr key={i} className="border-t hover:bg-gray-50">
+              <td className="px-4 py-2">{p.mailing_address || 'N/A'}</td>
+              <td className="px-4 py-2">{p.year_built || '—'}</td>
+              <td className="px-4 py-2">{p.last_sale_date || '—'}</td>
+              <td className="px-4 py-2">
+                {(p.owners || []).map((o, idx) => (
+                  <div key={idx}>
+                    {o.owner_name} <span className="text-xs text-gray-500">({o.owner_type})</span>
+                  </div>
+                ))}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
