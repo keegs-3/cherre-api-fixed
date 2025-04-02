@@ -7,33 +7,14 @@ const handler = async (req, res) => {
     query {
       tax_assessor_v2(limit: 100) {
         tax_assessor_id
-        zoning_code
         year_built
-        building_area_sq_ft
-        land_area_acres
-        last_sale_price
         last_sale_date
-        property_type
-        owner_occupied
-
-        tax_assessor_block_v2 {
-          block_number
-          block_type
-        }
-
-        tax_assessor_lot_v2 {
-          lot_number
-          lot_size_sq_ft
-        }
+        mailing_address
 
         tax_assessor_owner_v2 {
+          tax_assessor_id
           owner_name
           owner_type
-        }
-
-        usa_tax_assessor_history_v2 {
-          assessment_year
-          tax_amount
         }
       }
     }
@@ -44,33 +25,34 @@ const handler = async (req, res) => {
       method: 'POST',
       headers: {
         Authorization: AUTH_TOKEN,
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ query }),
+      body: JSON.stringify({ query })
     });
 
     const text = await response.text();
-    console.log('[RAW CHERRE RESPONSE]', text);
 
-    let json;
-    try {
-      json = JSON.parse(text);
-    } catch (err) {
-      return res.status(500).json({ error: 'Failed to parse JSON', raw: text });
-    }
+    // Log raw GraphQL result for debugging
+    console.log('[CHERRE RAW RESPONSE]', text);
+
+    const json = JSON.parse(text);
 
     if (json.errors) {
-      return res.status(500).json({ error: 'GraphQL query failed', details: json.errors });
+      return res.status(500).json({
+        error: 'GraphQL query failed',
+        details: json.errors
+      });
     }
 
     return res.status(200).json(json.data.tax_assessor_v2 || []);
   } catch (err) {
-    console.error('[CRASH]', err);
+    console.error('[SERVER ERROR]', err);
     return res.status(500).json({
       error: 'Serverless function crashed',
-      details: err.message,
+      details: err.message
     });
   }
 };
 
 module.exports = handler;
+
