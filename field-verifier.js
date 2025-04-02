@@ -6,7 +6,6 @@ const AUTH_TOKEN = 'Bearer YXBpLWNsaWVudC0xMzg0MWM0MC1hNWNlLTQwZjYtOGM5Ny0wYTIzM
 const objectType = 'tax_assessor_owner_v2';
 
 const fieldsToTest = [
-  const fieldsToTest = [
   'tax_assessor_id',
   'owner_name',
   'owner_type',
