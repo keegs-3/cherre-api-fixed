@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const AUTH_TOKEN = 'Bearer YXBpLWNsaWVudC0xMzg0MWM0MC1hNWNlLTQwZjYtOGM5Ny0wYTIzMmU4ZGU0ZWNAY2hlcnJlLmNvbTpOdUNCJEtYcSVlV3lrSSVnUVY3eTlNczNNbWRzZ0hJUlUwISNCSkM0aFVPWGUzcDI3TjRhRUNac1gyOVFodXZO';
 
 // 🔥 Replace this with any GraphQL object you want to test
-const objectType = 'tax_assessor_v2';
+const objectType = 'tax_assessor_owner_v2';
 
 const fieldsToTest = [
   'tax_assessor_id',
