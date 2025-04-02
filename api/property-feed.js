@@ -7,12 +7,10 @@ const handler = async (req, res) => {
     query {
       tax_assessor_v2(limit: 100) {
         tax_assessor_id
-        assessed_value
-        market_value
         zoning_code
         year_built
-        land_area_acres
         building_area_sq_ft
+        land_area_acres
         last_sale_price
         last_sale_date
         property_type
@@ -21,30 +19,21 @@ const handler = async (req, res) => {
         tax_assessor_block_v2 {
           block_number
           block_type
-          block_status
         }
 
         tax_assessor_lot_v2 {
           lot_number
           lot_size_sq_ft
-          lot_type
-          lot_status
         }
 
         tax_assessor_owner_v2 {
           owner_name
           owner_type
-          ownership_percent
-          mailing_address
-          is_primary_owner
         }
 
         usa_tax_assessor_history_v2 {
           assessment_year
-          assessed_value
-          market_value
           tax_amount
-          exemption_description
         }
       }
     }
