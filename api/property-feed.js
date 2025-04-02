@@ -6,21 +6,23 @@ const AUTH_TOKEN = process.env.CHERRE_TOKEN;
 module.exports = async (req, res) => {
   const { limit = 50, offset = 0, search = '' } = req.query;
 
-  const query = `
-    query {
-      tax_assessor_v2(limit: ${limit}, offset: ${offset}) {
-        tax_assessor_id
-        year_built
-        last_sale_date
-        mailing_address
-      }
-      tax_assessor_owner_v2(limit: 1000) {
-        tax_assessor_id
-        owner_name
-        owner_type
-      }
+ const query = `
+  query {
+    tax_assessor_v2(limit: ${limit}, offset: ${offset}) {
+      tax_assessor_id
+      year_built
+      last_sale_date
+      mailing_address
+      latitude
+      longitude
     }
-  `;
+    tax_assessor_owner_v2(limit: 1000) {
+      tax_assessor_id
+      owner_name
+      owner_type
+    }
+  }
+`;
 
   try {
     const response = await fetch('https://graphql.cherre.com/graphql', {
